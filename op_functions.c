@@ -1,6 +1,6 @@
 #include "monty.h"
 /**
- * op_push - Function that push
+ * op_push - Function that pushes an element to the stack.
  *
  * @stack: Defined stack
  * @line_number: Line number to the file to process
@@ -37,7 +37,8 @@ void op_push(stack_t **stack, unsigned int line_number)
 }
 
 /**
- * op_pall - Function that pall
+ * op_pall - Function that prints all the values on the stack,
+ * starting from the top of the stack.
  *
  * @stack: Defined stack
  * @line_number: Line number to the file to process
@@ -57,7 +58,7 @@ void op_pall(stack_t **stack, unsigned int line_number)
 }
 
 /**
- * op_pint - Function that pint
+ * op_pint - Function that prints the value at the top of the stack
  *
  * @stack: Defined stack
  * @line_number: Line number to the file to process
@@ -66,13 +67,16 @@ void op_pall(stack_t **stack, unsigned int line_number)
  */
 void op_pint(stack_t **stack, unsigned int line_number)
 {
-	(void)*stack;
-	(void)line_number;
-	printf("op_pint\n");
+	if (*stack == NULL)
+	{
+		fprintf(stderr, "L%u: can't pint, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	printf("%d\n", (*stack)->n);
 }
 
 /**
- * op_pop - Function that pop
+ * op_pop - Function that removes the top element of the stack.
  *
  * @stack: Defined stack
  * @line_number: Line number to the file to process
@@ -81,13 +85,21 @@ void op_pint(stack_t **stack, unsigned int line_number)
  */
 void op_pop(stack_t **stack, unsigned int line_number)
 {
-	(void)*stack;
-	(void)line_number;
-	printf("op_pop\n");
+	stack_t *tmp_stack = *stack;
+
+	if (*stack == NULL)
+	{
+		fprintf(stderr, "L%u: can't pop an empty stack\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+
+	tmp_stack = tmp_stack->next;
+	free(*stack);
+	*stack = tmp_stack;
 }
 
 /**
- * op_swap - Function that swap
+ * op_swap - Function that swaps the top two elements of the stack
  *
  * @stack: Defined stack
  * @line_number: Line number to the file to process
@@ -96,7 +108,18 @@ void op_pop(stack_t **stack, unsigned int line_number)
  */
 void op_swap(stack_t **stack, unsigned int line_number)
 {
-	(void)*stack;
-	(void)line_number;
-	printf("op_swap\n");
+	stack_t *tmp_stack = *stack;
+	int tmp_n;
+
+	if (!tmp_stack || !tmp_stack->next)
+	{
+		fprintf(stderr, "L%d: can't swap, stack too short\n",
+			line_number);
+		exit(EXIT_FAILURE);
+	}
+
+	tmp_stack = tmp_stack->next;
+	tmp_n = tmp_stack->n;
+	tmp_stack->n = (*stack)->n;
+	(*stack)->n = tmp_n;
 }
