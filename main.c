@@ -14,6 +14,11 @@ int main(int argc, char *argv[])
 	{
 		read_file(argv[1]);
 	}
+	else
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
 
-	return (0);
+	return (EXIT_SUCCESS);
 }

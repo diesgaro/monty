@@ -8,7 +8,7 @@
  * Return: 0
  */
 
-void (*get_op_func(char *s))(void)
+void (*get_op_func(char *s))(stack_t **stack, unsigned int line_number)
 {
 	instruction_t ops[] = {
 		{"push", op_push},

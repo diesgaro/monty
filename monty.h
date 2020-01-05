@@ -5,7 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define STR_DELIM "\t\r\n\a "
+#define STR_DELIM "\t\r\n\a\v\f "
+
+extern int stack_value;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -34,17 +36,18 @@ typedef struct stack_s
 typedef struct instruction_s
 {
 	char *opcode;
-	void (*f)();
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-int read_file(char *filename);
-int process_line(char *line, unsigned int line_number);
-void (*get_op_func(char *s))(void);
-void op_push(void);
-void op_pall(void);
-void op_pint(void);
-void op_pop(void);
-void op_swap(void);
-void op_add(void);
-void op_nop(void);
+void read_file(char *filename);
+void process_line(char *line, unsigned int line_number, stack_t **stack);
+void (*get_op_func(char *s))(stack_t **stack, unsigned int line_number);
+void op_push(stack_t **stack, unsigned int line_number);
+void op_pall(stack_t **stack, unsigned int line_number);
+void op_pint(stack_t **stack, unsigned int line_number);
+void op_pop(stack_t **stack, unsigned int line_number);
+void op_swap(stack_t **stack, unsigned int line_number);
+void op_add(stack_t **stack, unsigned int line_number);
+void op_nop(stack_t **stack, unsigned int line_number);
+void free_stack(stack_t *stack);
 #endif /* MONTY_H */
