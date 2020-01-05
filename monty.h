@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #define STR_DELIM "\t\r\n\a\v\f "
 
@@ -40,7 +41,7 @@ typedef struct instruction_s
 } instruction_t;
 
 void read_file(char *filename);
-void process_line(char *line, unsigned int line_number, stack_t **stack);
+int process_line(char *line, unsigned int line_number, stack_t **stack);
 void (*get_op_func(char *s))(stack_t **stack, unsigned int line_number);
 void op_push(stack_t **stack, unsigned int line_number);
 void op_pall(stack_t **stack, unsigned int line_number);
@@ -50,4 +51,5 @@ void op_swap(stack_t **stack, unsigned int line_number);
 void op_add(stack_t **stack, unsigned int line_number);
 void op_nop(stack_t **stack, unsigned int line_number);
 void free_stack(stack_t *stack);
+int is_number(char *token);
 #endif /* MONTY_H */

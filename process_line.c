@@ -11,14 +11,14 @@ int stack_value = 0;
  *
  * Return: 0
  */
-void process_line(char *line, unsigned int line_number, stack_t **stack)
+int process_line(char *line, unsigned int line_number, stack_t **stack)
 {
 	char *token = strtok(line, STR_DELIM);
 	void (*gof)(stack_t **stack, unsigned int line_number);
 
 	/* printf("line: %i token: %s\n", line_number, token); */
 	if (token == NULL)
-		return;
+		return (0);
 
 	gof = get_op_func(token);
 
@@ -26,15 +26,22 @@ void process_line(char *line, unsigned int line_number, stack_t **stack)
 	{
 		fprintf(stderr, "L%u: unknown instruction %s\n", line_number,
 			token);
-		exit(EXIT_FAILURE);
+		return (-1);
 	}
 
 	if (strcmp(token, "push") == 0)
 	{
 		token = strtok(NULL, STR_DELIM);
+		if (!is_number(token))
+		{
+			fprintf(stderr, "L%u: usage: push integer\n",
+				line_number);
+			return (-1);
+		}
 		stack_value = atoi(token);
-		/* printf("stack_value: %i\n", stack_value); */
 	}
 
 	gof(stack, line_number);
+
+	return (0);
 }
